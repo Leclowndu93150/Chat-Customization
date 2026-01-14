@@ -1,0 +1,805 @@
+$C = "../Common.ui";
+
+$C.@PageOverlay {
+
+  $C.@Container {
+    Anchor: (Width: 950, Height: 950);
+
+    #Title {
+      Group {
+        $C.@Title {
+          @Text = "Chat Customization";
+        }
+      }
+    }
+
+    #Content {
+      LayoutMode: Top;
+      Padding: (Left: 30, Right: 30, Top: 15, Bottom: 15);
+
+      // Tab Buttons
+      Group {
+        LayoutMode: Left;
+        Anchor: (Height: 50, Bottom: 15);
+
+        $C.@TextButton #TabEditor {
+          Text: "Editor";
+          Anchor: (Width: 120, Height: 46, Right: 10);
+        }
+
+        $C.@TextButton #TabGradients {
+          Text: "Gradients";
+          Anchor: (Width: 160, Height: 46, Right: 10);
+        }
+
+        $C.@TextButton #TabHelp {
+          Text: "Commands";
+          Anchor: (Width: 170, Height: 46);
+        }
+      }
+
+      // Editor Tab Content
+      Group #EditorContent {
+        LayoutMode: Top;
+
+        // Preview
+        Label {
+          Text: "PREVIEW";
+          Style: (TextColor: #96a9be, FontSize: 14, RenderBold: true, RenderUppercase: true);
+          Anchor: (Bottom: 8);
+        }
+
+        Group #PreviewContainer {
+          Anchor: (Height: 50, Bottom: 24);
+          Background: (Color: #0a0f17);
+          Padding: (Horizontal: 14, Vertical: 12);
+          LayoutMode: Left;
+
+          Label #PreviewPrefix {
+            Style: (FontSize: 16, TextColor: #ffffff);
+          }
+          Label #PreviewName {
+            Style: (FontSize: 16, TextColor: #ffffff);
+          }
+          Label #PreviewPronouns {
+            Style: (FontSize: 16, TextColor: #aaaaaa);
+          }
+          Label #PreviewSuffix {
+            Style: (FontSize: 16, TextColor: #ffffff);
+          }
+          Label #PreviewSeparator {
+            Text: ": ";
+            Style: (FontSize: 16, TextColor: #ffffff);
+          }
+          Label #PreviewMessage {
+            Text: "Hello, World!";
+            Style: (FontSize: 16, TextColor: #ffffff);
+          }
+        }
+
+        // Two columns
+        Group {
+          LayoutMode: Left;
+
+          // Left column
+          Group {
+            FlexWeight: 1;
+            LayoutMode: Top;
+            Padding: (Right: 25);
+
+            // Prefix Section
+            Label {
+              Text: "PREFIX";
+              Style: (TextColor: #96a9be, FontSize: 14, RenderBold: true, RenderUppercase: true);
+              Anchor: (Bottom: 8);
+            }
+
+            Group {
+              LayoutMode: Left;
+              Anchor: (Height: 120, Bottom: 10);
+
+              $C.@TextField #PrefixField {
+                Anchor: (Width: 220, Height: 38);
+                Style: (FontSize: 16, TextColor: #ffffff);
+              }
+
+              ColorPicker #PrefixColorPicker {
+                Anchor: (Width: 140, Height: 120, Left: 12);
+                Style: $C.@DefaultColorPickerStyle;
+              }
+            }
+
+            Group {
+              LayoutMode: Left;
+              Anchor: (Height: 32, Bottom: 18);
+
+              $C.@CheckBoxWithLabel #PrefixBold {
+                @Text = "Bold";
+                Anchor: (Right: 20);
+              }
+              $C.@CheckBoxWithLabel #PrefixItalic {
+                @Text = "Italic";
+                Anchor: (Right: 20);
+              }
+              $C.@CheckBoxWithLabel #PrefixUnderline {
+                @Text = "Underline";
+              }
+            }
+
+            // Name Section
+            Label {
+              Text: "NAME";
+              Style: (TextColor: #96a9be, FontSize: 14, RenderBold: true, RenderUppercase: true);
+              Anchor: (Bottom: 8);
+            }
+
+            Group {
+              LayoutMode: Left;
+              Anchor: (Height: 120, Bottom: 10);
+
+              $C.@TextField #NicknameField {
+                Anchor: (Width: 220, Height: 38);
+                Style: (FontSize: 16, TextColor: #ffffff);
+              }
+
+              ColorPicker #NameColorPicker {
+                Anchor: (Width: 140, Height: 120, Left: 12);
+                Style: $C.@DefaultColorPickerStyle;
+              }
+            }
+
+            Group {
+              LayoutMode: Left;
+              Anchor: (Height: 32, Bottom: 18);
+
+              $C.@CheckBoxWithLabel #NameBold {
+                @Text = "Bold";
+                Anchor: (Right: 20);
+              }
+              $C.@CheckBoxWithLabel #NameItalic {
+                @Text = "Italic";
+                Anchor: (Right: 20);
+              }
+              $C.@CheckBoxWithLabel #NameUnderline {
+                @Text = "Underline";
+              }
+            }
+
+            // Pronouns Section
+            Label {
+              Text: "PRONOUNS";
+              Style: (TextColor: #96a9be, FontSize: 14, RenderBold: true, RenderUppercase: true);
+              Anchor: (Bottom: 8);
+            }
+
+            Group {
+              LayoutMode: Left;
+              Anchor: (Height: 120, Bottom: 10);
+
+              $C.@TextField #PronounsField {
+                Anchor: (Width: 220, Height: 38);
+                Style: (FontSize: 16, TextColor: #ffffff);
+              }
+
+              ColorPicker #PronounsColorPicker {
+                Anchor: (Width: 140, Height: 120, Left: 12);
+                Style: $C.@DefaultColorPickerStyle;
+              }
+            }
+
+            Group {
+              LayoutMode: Left;
+              Anchor: (Height: 32, Bottom: 18);
+
+              $C.@CheckBoxWithLabel #PronounsBold {
+                @Text = "Bold";
+                Anchor: (Right: 20);
+              }
+              $C.@CheckBoxWithLabel #PronounsItalic {
+                @Text = "Italic";
+                Anchor: (Right: 20);
+              }
+              $C.@CheckBoxWithLabel #PronounsUnderline {
+                @Text = "Underline";
+              }
+            }
+          }
+
+          // Right column
+          Group {
+            FlexWeight: 1;
+            LayoutMode: Top;
+            Padding: (Left: 25);
+
+            // Suffix Section
+            Label {
+              Text: "SUFFIX";
+              Style: (TextColor: #96a9be, FontSize: 14, RenderBold: true, RenderUppercase: true);
+              Anchor: (Bottom: 8);
+            }
+
+            Group {
+              LayoutMode: Left;
+              Anchor: (Height: 120, Bottom: 10);
+
+              $C.@TextField #SuffixField {
+                Anchor: (Width: 220, Height: 38);
+                Style: (FontSize: 16, TextColor: #ffffff);
+              }
+
+              ColorPicker #SuffixColorPicker {
+                Anchor: (Width: 140, Height: 120, Left: 12);
+                Style: $C.@DefaultColorPickerStyle;
+              }
+            }
+
+            Group {
+              LayoutMode: Left;
+              Anchor: (Height: 32, Bottom: 18);
+
+              $C.@CheckBoxWithLabel #SuffixBold {
+                @Text = "Bold";
+                Anchor: (Right: 20);
+              }
+              $C.@CheckBoxWithLabel #SuffixItalic {
+                @Text = "Italic";
+                Anchor: (Right: 20);
+              }
+              $C.@CheckBoxWithLabel #SuffixUnderline {
+                @Text = "Underline";
+              }
+            }
+
+            // Message Section
+            Label {
+              Text: "MESSAGE";
+              Style: (TextColor: #96a9be, FontSize: 14, RenderBold: true, RenderUppercase: true);
+              Anchor: (Bottom: 8);
+            }
+
+            Group {
+              LayoutMode: Left;
+              Anchor: (Height: 120, Bottom: 10);
+
+              ColorPicker #MessageColorPicker {
+                Anchor: (Width: 140, Height: 120);
+                Style: $C.@DefaultColorPickerStyle;
+              }
+
+              Label {
+                Text: "Color of your chat messages";
+                Style: (TextColor: #6e7da1, FontSize: 14);
+                Anchor: (Left: 14);
+              }
+            }
+
+            Group {
+              LayoutMode: Left;
+              Anchor: (Height: 32, Bottom: 18);
+
+              $C.@CheckBoxWithLabel #MessageBold {
+                @Text = "Bold";
+                Anchor: (Right: 20);
+              }
+              $C.@CheckBoxWithLabel #MessageItalic {
+                @Text = "Italic";
+                Anchor: (Right: 20);
+              }
+              $C.@CheckBoxWithLabel #MessageUnderline {
+                @Text = "Underline";
+              }
+            }
+
+            // Disclaimer
+            Group {
+              Anchor: (Top: 20);
+              LayoutMode: Top;
+
+              Label {
+                Text: "Note: Styles (Bold/Italic/Underline)";
+                Style: (TextColor: #6e7da1, FontSize: 13);
+                Anchor: (Bottom: 3);
+              }
+              Label {
+                Text: "are not shown in preview but will";
+                Style: (TextColor: #6e7da1, FontSize: 13);
+                Anchor: (Bottom: 3);
+              }
+              Label {
+                Text: "apply in chat.";
+                Style: (TextColor: #6e7da1, FontSize: 13);
+              }
+            }
+          }
+        }
+      }
+
+      // Gradients Tab Content
+      Group #GradientsContent {
+        Visible: false;
+        LayoutMode: Top;
+
+        Label {
+          Text: "Gradients override solid colors. Preview shows start color only - full gradient visible in chat. Press X to reset.";
+          Style: (TextColor: #6e7da1, FontSize: 14);
+          Anchor: (Bottom: 16);
+        }
+
+        // Two columns
+        Group {
+          LayoutMode: Left;
+
+          // Left column
+          Group {
+            FlexWeight: 1;
+            LayoutMode: Top;
+            Padding: (Right: 20);
+
+            // Prefix Gradient
+            Group {
+              LayoutMode: Top;
+              Anchor: (Bottom: 16);
+
+              Group {
+                LayoutMode: Left;
+                Anchor: (Height: 24, Bottom: 6);
+
+                Label {
+                  Text: "PREFIX";
+                  Style: (TextColor: #96a9be, FontSize: 14, RenderBold: true);
+                  Anchor: (Right: 16);
+                }
+
+                $C.@CheckBoxWithLabel #PrefixRainbow {
+                  @Text = "Rainbow";
+                  Anchor: (Right: 24);
+                }
+
+                Button #PrefixGradientClear {
+                  Anchor: (Width: 40, Height: 40);
+                  Background: (Color: #3a4555);
+                  Group {
+                    LayoutMode: Center;
+                    Label { Text: "X"; Style: (FontSize: 16, TextColor: #ffffff); }
+                  }
+                }
+              }
+
+              Group #PrefixGradientPreviewContainer {
+                Anchor: (Height: 28, Bottom: 6);
+                Background: (Color: #0a0f17);
+                Padding: (Horizontal: 10, Vertical: 4);
+                LayoutMode: Left;
+
+                Label #PrefixGradientPreview {
+                  Text: "[Prefix]";
+                  Style: (FontSize: 15, TextColor: #ffffff);
+                }
+              }
+
+              Group {
+                LayoutMode: Left;
+                Anchor: (Height: 100);
+
+                Group {
+                  LayoutMode: Top;
+                  Anchor: (Width: 160, Right: 16);
+
+                  Label { Text: "Start Color"; Style: (TextColor: #6e7da1, FontSize: 12); Anchor: (Bottom: 4); }
+                  ColorPicker #PrefixGradientStartPicker {
+                    Anchor: (Width: 140, Height: 80);
+                    Style: $C.@DefaultColorPickerStyle;
+                  }
+                }
+
+                Group {
+                  LayoutMode: Top;
+                  Anchor: (Width: 160);
+
+                  Label { Text: "End Color"; Style: (TextColor: #6e7da1, FontSize: 12); Anchor: (Bottom: 4); }
+                  ColorPicker #PrefixGradientEndPicker {
+                    Anchor: (Width: 140, Height: 80);
+                    Style: $C.@DefaultColorPickerStyle;
+                  }
+                }
+              }
+            }
+
+            // Name Gradient
+            Group {
+              LayoutMode: Top;
+              Anchor: (Bottom: 16);
+
+              Group {
+                LayoutMode: Left;
+                Anchor: (Height: 24, Bottom: 6);
+
+                Label {
+                  Text: "NAME";
+                  Style: (TextColor: #96a9be, FontSize: 14, RenderBold: true);
+                  Anchor: (Right: 16);
+                }
+
+                $C.@CheckBoxWithLabel #NameRainbow {
+                  @Text = "Rainbow";
+                  Anchor: (Right: 24);
+                }
+
+                Button #NameGradientClear {
+                  Anchor: (Width: 40, Height: 40);
+                  Background: (Color: #3a4555);
+                  Group {
+                    LayoutMode: Center;
+                    Label { Text: "X"; Style: (FontSize: 16, TextColor: #ffffff); }
+                  }
+                }
+              }
+
+              Group #NameGradientPreviewContainer {
+                Anchor: (Height: 28, Bottom: 6);
+                Background: (Color: #0a0f17);
+                Padding: (Horizontal: 10, Vertical: 4);
+                LayoutMode: Left;
+
+                Label #NameGradientPreview {
+                  Text: "PlayerName";
+                  Style: (FontSize: 15, TextColor: #ffffff);
+                }
+              }
+
+              Group {
+                LayoutMode: Left;
+                Anchor: (Height: 100);
+
+                Group {
+                  LayoutMode: Top;
+                  Anchor: (Width: 160, Right: 16);
+
+                  Label { Text: "Start Color"; Style: (TextColor: #6e7da1, FontSize: 12); Anchor: (Bottom: 4); }
+                  ColorPicker #NameGradientStartPicker {
+                    Anchor: (Width: 140, Height: 80);
+                    Style: $C.@DefaultColorPickerStyle;
+                  }
+                }
+
+                Group {
+                  LayoutMode: Top;
+                  Anchor: (Width: 160);
+
+                  Label { Text: "End Color"; Style: (TextColor: #6e7da1, FontSize: 12); Anchor: (Bottom: 4); }
+                  ColorPicker #NameGradientEndPicker {
+                    Anchor: (Width: 140, Height: 80);
+                    Style: $C.@DefaultColorPickerStyle;
+                  }
+                }
+              }
+            }
+
+            // Pronouns Gradient
+            Group {
+              LayoutMode: Top;
+              Anchor: (Bottom: 16);
+
+              Group {
+                LayoutMode: Left;
+                Anchor: (Height: 24, Bottom: 6);
+
+                Label {
+                  Text: "PRONOUNS";
+                  Style: (TextColor: #96a9be, FontSize: 14, RenderBold: true);
+                  Anchor: (Right: 16);
+                }
+
+                $C.@CheckBoxWithLabel #PronounsRainbow {
+                  @Text = "Rainbow";
+                  Anchor: (Right: 24);
+                }
+
+                Button #PronounsGradientClear {
+                  Anchor: (Width: 40, Height: 40);
+                  Background: (Color: #3a4555);
+                  Group {
+                    LayoutMode: Center;
+                    Label { Text: "X"; Style: (FontSize: 16, TextColor: #ffffff); }
+                  }
+                }
+              }
+
+              Group #PronounsGradientPreviewContainer {
+                Anchor: (Height: 28, Bottom: 6);
+                Background: (Color: #0a0f17);
+                Padding: (Horizontal: 10, Vertical: 4);
+                LayoutMode: Left;
+
+                Label #PronounsGradientPreview {
+                  Text: "(he/him)";
+                  Style: (FontSize: 15, TextColor: #aaaaaa);
+                }
+              }
+
+              Group {
+                LayoutMode: Left;
+                Anchor: (Height: 100);
+
+                Group {
+                  LayoutMode: Top;
+                  Anchor: (Width: 160, Right: 16);
+
+                  Label { Text: "Start Color"; Style: (TextColor: #6e7da1, FontSize: 12); Anchor: (Bottom: 4); }
+                  ColorPicker #PronounsGradientStartPicker {
+                    Anchor: (Width: 140, Height: 80);
+                    Style: $C.@DefaultColorPickerStyle;
+                  }
+                }
+
+                Group {
+                  LayoutMode: Top;
+                  Anchor: (Width: 160);
+
+                  Label { Text: "End Color"; Style: (TextColor: #6e7da1, FontSize: 12); Anchor: (Bottom: 4); }
+                  ColorPicker #PronounsGradientEndPicker {
+                    Anchor: (Width: 140, Height: 80);
+                    Style: $C.@DefaultColorPickerStyle;
+                  }
+                }
+              }
+            }
+          }
+
+          // Right column
+          Group {
+            FlexWeight: 1;
+            LayoutMode: Top;
+            Padding: (Left: 20);
+
+            // Suffix Gradient
+            Group {
+              LayoutMode: Top;
+              Anchor: (Bottom: 16);
+
+              Group {
+                LayoutMode: Left;
+                Anchor: (Height: 24, Bottom: 6);
+
+                Label {
+                  Text: "SUFFIX";
+                  Style: (TextColor: #96a9be, FontSize: 14, RenderBold: true);
+                  Anchor: (Right: 16);
+                }
+
+                $C.@CheckBoxWithLabel #SuffixRainbow {
+                  @Text = "Rainbow";
+                  Anchor: (Right: 24);
+                }
+
+                Button #SuffixGradientClear {
+                  Anchor: (Width: 40, Height: 40);
+                  Background: (Color: #3a4555);
+                  Group {
+                    LayoutMode: Center;
+                    Label { Text: "X"; Style: (FontSize: 16, TextColor: #ffffff); }
+                  }
+                }
+              }
+
+              Group #SuffixGradientPreviewContainer {
+                Anchor: (Height: 28, Bottom: 6);
+                Background: (Color: #0a0f17);
+                Padding: (Horizontal: 10, Vertical: 4);
+                LayoutMode: Left;
+
+                Label #SuffixGradientPreview {
+                  Text: "[Suffix]";
+                  Style: (FontSize: 15, TextColor: #ffffff);
+                }
+              }
+
+              Group {
+                LayoutMode: Left;
+                Anchor: (Height: 100);
+
+                Group {
+                  LayoutMode: Top;
+                  Anchor: (Width: 160, Right: 16);
+
+                  Label { Text: "Start Color"; Style: (TextColor: #6e7da1, FontSize: 12); Anchor: (Bottom: 4); }
+                  ColorPicker #SuffixGradientStartPicker {
+                    Anchor: (Width: 140, Height: 80);
+                    Style: $C.@DefaultColorPickerStyle;
+                  }
+                }
+
+                Group {
+                  LayoutMode: Top;
+                  Anchor: (Width: 160);
+
+                  Label { Text: "End Color"; Style: (TextColor: #6e7da1, FontSize: 12); Anchor: (Bottom: 4); }
+                  ColorPicker #SuffixGradientEndPicker {
+                    Anchor: (Width: 140, Height: 80);
+                    Style: $C.@DefaultColorPickerStyle;
+                  }
+                }
+              }
+            }
+
+            // Message Gradient
+            Group {
+              LayoutMode: Top;
+              Anchor: (Bottom: 16);
+
+              Group {
+                LayoutMode: Left;
+                Anchor: (Height: 24, Bottom: 6);
+
+                Label {
+                  Text: "MESSAGE";
+                  Style: (TextColor: #96a9be, FontSize: 14, RenderBold: true);
+                  Anchor: (Right: 16);
+                }
+
+                $C.@CheckBoxWithLabel #MessageRainbow {
+                  @Text = "Rainbow";
+                  Anchor: (Right: 24);
+                }
+
+                Button #MessageGradientClear {
+                  Anchor: (Width: 40, Height: 40);
+                  Background: (Color: #3a4555);
+                  Group {
+                    LayoutMode: Center;
+                    Label { Text: "X"; Style: (FontSize: 16, TextColor: #ffffff); }
+                  }
+                }
+              }
+
+              Group #MessageGradientPreviewContainer {
+                Anchor: (Height: 28, Bottom: 6);
+                Background: (Color: #0a0f17);
+                Padding: (Horizontal: 10, Vertical: 4);
+                LayoutMode: Left;
+
+                Label #MessageGradientPreview {
+                  Text: "Hello, World!";
+                  Style: (FontSize: 15, TextColor: #ffffff);
+                }
+              }
+
+              Group {
+                LayoutMode: Left;
+                Anchor: (Height: 100);
+
+                Group {
+                  LayoutMode: Top;
+                  Anchor: (Width: 160, Right: 16);
+
+                  Label { Text: "Start Color"; Style: (TextColor: #6e7da1, FontSize: 12); Anchor: (Bottom: 4); }
+                  ColorPicker #MessageGradientStartPicker {
+                    Anchor: (Width: 140, Height: 80);
+                    Style: $C.@DefaultColorPickerStyle;
+                  }
+                }
+
+                Group {
+                  LayoutMode: Top;
+                  Anchor: (Width: 160);
+
+                  Label { Text: "End Color"; Style: (TextColor: #6e7da1, FontSize: 12); Anchor: (Bottom: 4); }
+                  ColorPicker #MessageGradientEndPicker {
+                    Anchor: (Width: 140, Height: 80);
+                    Style: $C.@DefaultColorPickerStyle;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+
+      // Help Tab Content
+      Group #HelpContent {
+        Visible: false;
+        LayoutMode: Top;
+
+        // Two columns for commands
+        Group {
+          LayoutMode: Left;
+
+          // Left column - Text commands
+          Group {
+            FlexWeight: 1;
+            LayoutMode: Top;
+            Padding: (Right: 20);
+
+            Label {
+              Text: "TEXT COMMANDS";
+              Style: (TextColor: #96a9be, FontSize: 14, RenderBold: true, RenderUppercase: true);
+              Anchor: (Bottom: 12);
+            }
+
+            Label { Text: "/prefix <text>"; Style: (TextColor: #7ecc7e, FontSize: 15); Anchor: (Bottom: 4); }
+            Label { Text: "Set your chat prefix"; Style: (TextColor: #6e7da1, FontSize: 14); Anchor: (Bottom: 12); }
+
+            Label { Text: "/suffix <text>"; Style: (TextColor: #7ecc7e, FontSize: 15); Anchor: (Bottom: 4); }
+            Label { Text: "Set your chat suffix"; Style: (TextColor: #6e7da1, FontSize: 14); Anchor: (Bottom: 12); }
+
+            Label { Text: "/nickname <text>"; Style: (TextColor: #7ecc7e, FontSize: 15); Anchor: (Bottom: 4); }
+            Label { Text: "Set your display name"; Style: (TextColor: #6e7da1, FontSize: 14); Anchor: (Bottom: 12); }
+
+            Label { Text: "/pronouns <text>"; Style: (TextColor: #7ecc7e, FontSize: 15); Anchor: (Bottom: 4); }
+            Label { Text: "Set your pronouns (e.g. he/him)"; Style: (TextColor: #6e7da1, FontSize: 14); Anchor: (Bottom: 12); }
+
+            Label { Text: "/resetformat"; Style: (TextColor: #7ecc7e, FontSize: 15); Anchor: (Bottom: 4); }
+            Label { Text: "Reset all formatting to default"; Style: (TextColor: #6e7da1, FontSize: 14); Anchor: (Bottom: 12); }
+
+            Label { Text: "/chatprofile"; Style: (TextColor: #7ecc7e, FontSize: 15); Anchor: (Bottom: 4); }
+            Label { Text: "View your current chat profile"; Style: (TextColor: #6e7da1, FontSize: 14); Anchor: (Bottom: 12); }
+          }
+
+          // Right column - Color & Style commands
+          Group {
+            FlexWeight: 1;
+            LayoutMode: Top;
+            Padding: (Left: 20);
+
+            Label {
+              Text: "COLOR & STYLE";
+              Style: (TextColor: #96a9be, FontSize: 14, RenderBold: true, RenderUppercase: true);
+              Anchor: (Bottom: 12);
+            }
+
+            Label { Text: "/namecolor <color>"; Style: (TextColor: #7ecc7e, FontSize: 15); Anchor: (Bottom: 4); }
+            Label { Text: "Set name color (#FF0000 or RED)"; Style: (TextColor: #6e7da1, FontSize: 14); Anchor: (Bottom: 12); }
+
+            Label { Text: "/msgcolor <color>"; Style: (TextColor: #7ecc7e, FontSize: 15); Anchor: (Bottom: 4); }
+            Label { Text: "Set message color"; Style: (TextColor: #6e7da1, FontSize: 14); Anchor: (Bottom: 12); }
+
+            Label { Text: "/prefixcolor <color>"; Style: (TextColor: #7ecc7e, FontSize: 15); Anchor: (Bottom: 4); }
+            Label { Text: "Set prefix color"; Style: (TextColor: #6e7da1, FontSize: 14); Anchor: (Bottom: 12); }
+
+            Label { Text: "/suffixcolor <color>"; Style: (TextColor: #7ecc7e, FontSize: 15); Anchor: (Bottom: 4); }
+            Label { Text: "Set suffix color"; Style: (TextColor: #6e7da1, FontSize: 14); Anchor: (Bottom: 12); }
+
+            Label { Text: "/pronounscolor <color>"; Style: (TextColor: #7ecc7e, FontSize: 15); Anchor: (Bottom: 4); }
+            Label { Text: "Set pronouns color"; Style: (TextColor: #6e7da1, FontSize: 14); Anchor: (Bottom: 12); }
+
+            Label { Text: "/gradient <target> <start> <end>"; Style: (TextColor: #7ecc7e, FontSize: 15); Anchor: (Bottom: 4); }
+            Label { Text: "Apply gradient (prefix/name/etc)"; Style: (TextColor: #6e7da1, FontSize: 14); Anchor: (Bottom: 12); }
+
+            Label { Text: "/rainbow <target> [on|off]"; Style: (TextColor: #7ecc7e, FontSize: 15); Anchor: (Bottom: 4); }
+            Label { Text: "Toggle rainbow effect"; Style: (TextColor: #6e7da1, FontSize: 14); Anchor: (Bottom: 12); }
+
+            Label { Text: "/style <target> <style> [on|off]"; Style: (TextColor: #7ecc7e, FontSize: 15); Anchor: (Bottom: 4); }
+            Label { Text: "bold, italic, underline"; Style: (TextColor: #6e7da1, FontSize: 14); Anchor: (Bottom: 12); }
+
+            Label { Text: "/colors"; Style: (TextColor: #7ecc7e, FontSize: 15); Anchor: (Bottom: 4); }
+            Label { Text: "Show all available color names"; Style: (TextColor: #6e7da1, FontSize: 14); Anchor: (Bottom: 12); }
+          }
+        }
+      }
+
+      // Spacer
+      Group { FlexWeight: 1; }
+
+      // Buttons at bottom
+      Group {
+        LayoutMode: Right;
+        Anchor: (Height: 54, Top: 10);
+
+        $C.@TextButton #SaveButton {
+          Text: "Save";
+          Padding: (Left: 20, Right: 20, Top: 10, Bottom: 10);
+          Anchor: (Right: 12);
+          Overscroll: false;
+        }
+
+        $C.@CancelTextButton #CancelButton {
+          Text: "Cancel";
+          Padding: (Left: 20, Right: 20, Top: 10, Bottom: 10);
+          Overscroll: false;
+        }
+      }
+    }
+  }
+}
+
+$C.@BackButton {}

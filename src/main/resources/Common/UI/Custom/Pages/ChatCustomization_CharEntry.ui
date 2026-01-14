@@ -1,0 +1,13 @@
+$Common = "../Common.ui";
+
+TextButton {
+  Anchor: (Width: 24, Height: 24);
+  Background: (Color: #2a2a2a);
+  Padding: (Left: 2, Right: 2, Top: 2, Bottom: 2);
+  Style: (
+    Default: (LabelStyle: (FontSize: 14, TextColor: #ffffffff)),
+    Hovered: (Background: (Color: #3a3a3a), LabelStyle: (FontSize: 14, TextColor: #ffffffff)),
+    Pressed: (Background: (Color: #1a1a1a), LabelStyle: (FontSize: 14, TextColor: #ffffffff)),
+    Sounds: $Common.@ButtonSounds
+  );
+}

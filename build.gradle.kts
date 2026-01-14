@@ -3,8 +3,8 @@ plugins {
     id("hytale-mod") version "0.+"
 }
 
-group = "com.example"
-version = "0.1.0"
+group = "com.leclowndu93150"
+version = "1.0.0"
 val javaVersion = 25
 
 repositories {
@@ -18,8 +18,6 @@ dependencies {
     compileOnly(libs.jetbrains.annotations)
     compileOnly(libs.jspecify)
 
-    // this mod is optional, but is included so you can preview your mod icon
-    // in the in-game mod list via the /modlist command
     runtimeOnly(libs.bettermodlist)
 }
 
@@ -71,8 +69,6 @@ tasks.withType<Jar> {
 
 publishing {
     repositories {
-        // This is where you put repositories that you want to publish to.
-        // Do NOT put repositories for your dependencies here.
     }
 
     publications {
@@ -82,7 +78,6 @@ publishing {
     }
 }
 
-// IDEA no longer automatically downloads sources/javadoc jars for dependencies, so we need to explicitly enable the behavior.
 idea {
     module {
         isDownloadSources = true
