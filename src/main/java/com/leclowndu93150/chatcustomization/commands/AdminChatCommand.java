@@ -23,7 +23,7 @@ public class AdminChatCommand extends AbstractPlayerCommand {
     private final ChatManager chatManager;
     private final ChatCustomizationConfig config;
 
-    private final RequiredArg<String> actionArg = this.withRequiredArg("action", "view, reset, setprefix, setsuffix, setnickname", ArgTypes.STRING);
+    private final RequiredArg<String> actionArg = this.withRequiredArg("action", "view, reset, setprefix, setsuffix, setnickname, setpronouns, setnamecolor, setmsgcolor, setprefixcolor, setsuffixcolor, setpronounscolor, clearrainbow, cleargradient", ArgTypes.STRING);
     private final RequiredArg<String> playerArg = this.withRequiredArg("player", "Target player name", ArgTypes.STRING);
     private final DefaultArg<String> valueArg = this.withDefaultArg("value", "Value to set", ArgTypes.STRING, "", "");
 
@@ -69,6 +69,9 @@ public class AdminChatCommand extends AbstractPlayerCommand {
             case "setpronouns" -> setPronouns(context, targetName, targetUuid, profile, value);
             case "setnamecolor" -> setNameColor(context, targetName, targetUuid, profile, value);
             case "setmsgcolor" -> setMsgColor(context, targetName, targetUuid, profile, value);
+            case "setprefixcolor" -> setPrefixColor(context, targetName, targetUuid, profile, value);
+            case "setsuffixcolor" -> setSuffixColor(context, targetName, targetUuid, profile, value);
+            case "setpronounscolor" -> setPronounsColor(context, targetName, targetUuid, profile, value);
             case "clearrainbow" -> clearRainbow(context, targetName, targetUuid, profile);
             case "cleargradient" -> clearGradient(context, targetName, targetUuid, profile);
             default -> showHelp(context);
@@ -154,6 +157,36 @@ public class AdminChatCommand extends AbstractPlayerCommand {
         }
     }
 
+    private void setPrefixColor(CommandContext context, String playerName, UUID targetUuid, PlayerChatProfile profile, String value) {
+        if (value.isEmpty()) {
+            chatManager.setColor(targetUuid, "prefix", null);
+            context.sendMessage(Message.raw("Cleared prefix color for " + playerName + ".").color("GREEN"));
+        } else {
+            chatManager.setColor(targetUuid, "prefix", value);
+            context.sendMessage(Message.raw("Set prefix color for " + playerName + " to: " + value).color("GREEN"));
+        }
+    }
+
+    private void setSuffixColor(CommandContext context, String playerName, UUID targetUuid, PlayerChatProfile profile, String value) {
+        if (value.isEmpty()) {
+            chatManager.setColor(targetUuid, "suffix", null);
+            context.sendMessage(Message.raw("Cleared suffix color for " + playerName + ".").color("GREEN"));
+        } else {
+            chatManager.setColor(targetUuid, "suffix", value);
+            context.sendMessage(Message.raw("Set suffix color for " + playerName + " to: " + value).color("GREEN"));
+        }
+    }
+
+    private void setPronounsColor(CommandContext context, String playerName, UUID targetUuid, PlayerChatProfile profile, String value) {
+        if (value.isEmpty()) {
+            chatManager.setColor(targetUuid, "pronouns", null);
+            context.sendMessage(Message.raw("Cleared pronouns color for " + playerName + ".").color("GREEN"));
+        } else {
+            chatManager.setColor(targetUuid, "pronouns", value);
+            context.sendMessage(Message.raw("Set pronouns color for " + playerName + " to: " + value).color("GREEN"));
+        }
+    }
+
     private void clearRainbow(CommandContext context, String playerName, UUID targetUuid, PlayerChatProfile profile) {
         chatManager.setRainbow(targetUuid, "prefix", false);
         chatManager.setRainbow(targetUuid, "name", false);
@@ -182,6 +215,9 @@ public class AdminChatCommand extends AbstractPlayerCommand {
         context.sendMessage(Message.raw("/chatadmin setpronouns <player> [value] - Set/clear pronouns"));
         context.sendMessage(Message.raw("/chatadmin setnamecolor <player> [value] - Set/clear name color"));
         context.sendMessage(Message.raw("/chatadmin setmsgcolor <player> [value] - Set/clear message color"));
+        context.sendMessage(Message.raw("/chatadmin setprefixcolor <player> [value] - Set/clear prefix color"));
+        context.sendMessage(Message.raw("/chatadmin setsuffixcolor <player> [value] - Set/clear suffix color"));
+        context.sendMessage(Message.raw("/chatadmin setpronounscolor <player> [value] - Set/clear pronouns color"));
         context.sendMessage(Message.raw("/chatadmin clearrainbow <player> - Disable rainbow"));
         context.sendMessage(Message.raw("/chatadmin cleargradient <player> - Clear gradient"));
     }
