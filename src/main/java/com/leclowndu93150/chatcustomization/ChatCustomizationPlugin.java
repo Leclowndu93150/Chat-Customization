@@ -47,7 +47,7 @@ public class ChatCustomizationPlugin extends JavaPlugin {
     @Override
     protected void start() {
         ChatCustomizationConfig cfg = this.config.get();
-
+        this.config.save();
         this.getCommandRegistry().registerCommand(new PrefixCommand(this.chatManager, cfg.getMaxPrefixLength()));
         this.getCommandRegistry().registerCommand(new SuffixCommand(this.chatManager, cfg.getMaxSuffixLength()));
         this.getCommandRegistry().registerCommand(new NicknameCommand(this.chatManager, cfg.getMaxNicknameLength()));
