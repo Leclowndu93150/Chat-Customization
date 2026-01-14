@@ -27,6 +27,11 @@ public class ChatEditorCommand extends AbstractAsyncCommand {
         this.chatManager = chatManager;
     }
 
+    @Override
+    protected boolean canGeneratePermission() {
+        return false;
+    }
+
     @Nonnull
     @Override
     protected CompletableFuture<Void> executeAsync(CommandContext commandContext) {

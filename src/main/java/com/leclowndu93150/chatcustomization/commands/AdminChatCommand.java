@@ -16,6 +16,7 @@ import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.leclowndu93150.chatcustomization.config.ChatCustomizationConfig;
 import com.leclowndu93150.chatcustomization.data.PlayerChatProfile;
 import com.leclowndu93150.chatcustomization.manager.ChatManager;
+import com.leclowndu93150.chatcustomization.util.ArgumentParser;
 import javax.annotation.Nonnull;
 import java.util.UUID;
 
@@ -50,8 +51,8 @@ public class AdminChatCommand extends AbstractPlayerCommand {
 
         String action = actionArg.get(context).toLowerCase();
         String targetName = playerArg.get(context);
-        String value = valueArg.get(context);
-        String value2 = value2Arg.get(context);
+        String value = ArgumentParser.stripQuotes(valueArg.get(context));
+        String value2 = ArgumentParser.stripQuotes(value2Arg.get(context));
 
         PlayerRef targetPlayer = Universe.get().getPlayerByUsername(targetName, NameMatching.STARTS_WITH_IGNORE_CASE);
         if (targetPlayer == null) {

@@ -4,7 +4,7 @@ import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
-import com.hypixel.hytale.server.core.command.system.arguments.system.DefaultArg;
+import com.hypixel.hytale.server.core.command.system.arguments.system.RequiredArg;
 import com.hypixel.hytale.server.core.command.system.arguments.types.ArgTypes;
 import com.hypixel.hytale.server.core.command.system.basecommands.AbstractPlayerCommand;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
@@ -16,7 +16,7 @@ import javax.annotation.Nonnull;
 
 public class MsgColorCommand extends AbstractPlayerCommand {
     private final ChatManager chatManager;
-    private final DefaultArg<String> colorArg = this.withDefaultArg("color", "Color name or hex code (e.g. WHITE, #FFFFFF)", ArgTypes.STRING, "", "");
+    private final RequiredArg<String> colorArg = this.withRequiredArg("color", "Color name or hex code (e.g. WHITE, #FFFFFF)", ArgTypes.STRING);
 
     public MsgColorCommand(@Nonnull ChatManager chatManager) {
         super("msgcolor", "Set the color of your messages in chat");
@@ -32,12 +32,6 @@ public class MsgColorCommand extends AbstractPlayerCommand {
     protected void execute(@Nonnull CommandContext context, @Nonnull Store<EntityStore> store,
                           @Nonnull Ref<EntityStore> ref, @Nonnull PlayerRef playerRef, @Nonnull World world) {
         String color = colorArg.get(context);
-
-        if (color.isEmpty() || color.equalsIgnoreCase("clear")) {
-            chatManager.setColor(playerRef.getUuid(), "message", null);
-            context.sendMessage(Message.raw("Your message color has been reset to default.").color("GREEN"));
-            return;
-        }
 
         if (!ColorUtil.isValidColor(color)) {
             context.sendMessage(Message.raw("Invalid color. Use a color name or hex code (#FFFFFF).").color("RED"));

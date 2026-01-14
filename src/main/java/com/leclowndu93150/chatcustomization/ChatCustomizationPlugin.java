@@ -66,6 +66,7 @@ public class ChatCustomizationPlugin extends JavaPlugin {
         this.getCommandRegistry().registerCommand(new ColorsCommand());
         this.getCommandRegistry().registerCommand(new AdminChatCommand(this.chatManager, cfg));
         this.getCommandRegistry().registerCommand(new ChatEditorCommand(this.chatManager));
+        this.getCommandRegistry().registerCommand(new HyssentialCommand(this.chatManager));
 
         this.getLogger().at(Level.INFO).log("ChatCustomization loaded!");
     }

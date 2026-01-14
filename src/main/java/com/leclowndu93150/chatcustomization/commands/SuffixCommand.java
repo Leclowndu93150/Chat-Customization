@@ -4,19 +4,20 @@ import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
-import com.hypixel.hytale.server.core.command.system.arguments.system.DefaultArg;
+import com.hypixel.hytale.server.core.command.system.arguments.system.RequiredArg;
 import com.hypixel.hytale.server.core.command.system.arguments.types.ArgTypes;
 import com.hypixel.hytale.server.core.command.system.basecommands.AbstractPlayerCommand;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.leclowndu93150.chatcustomization.manager.ChatManager;
+import com.leclowndu93150.chatcustomization.util.ArgumentParser;
 import javax.annotation.Nonnull;
 
 public class SuffixCommand extends AbstractPlayerCommand {
     private final ChatManager chatManager;
     private final int maxLength;
-    private final DefaultArg<String> suffixArg = this.withDefaultArg("suffix", "Your chat suffix (leave empty to clear)", ArgTypes.STRING, "", "");
+    private final RequiredArg<String> suffixArg = this.withRequiredArg("suffix", "Your chat suffix (use \"quotes\" for spaces)", ArgTypes.STRING);
 
     public SuffixCommand(@Nonnull ChatManager chatManager, int maxLength) {
         super("suffix", "Set your chat suffix");
@@ -32,13 +33,7 @@ public class SuffixCommand extends AbstractPlayerCommand {
     @Override
     protected void execute(@Nonnull CommandContext context, @Nonnull Store<EntityStore> store,
                           @Nonnull Ref<EntityStore> ref, @Nonnull PlayerRef playerRef, @Nonnull World world) {
-        String suffix = suffixArg.get(context);
-
-        if (suffix.isEmpty()) {
-            chatManager.setSuffix(playerRef.getUuid(), null);
-            context.sendMessage(Message.raw("Your suffix has been cleared."));
-            return;
-        }
+        String suffix = ArgumentParser.stripQuotes(suffixArg.get(context));
 
         if (suffix.length() > maxLength) {
             context.sendMessage(Message.raw(String.format("Suffix cannot exceed %d characters.", maxLength)));
