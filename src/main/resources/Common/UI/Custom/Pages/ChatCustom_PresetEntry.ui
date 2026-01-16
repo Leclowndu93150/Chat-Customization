@@ -1,0 +1,66 @@
+$C = "../Common.ui";
+
+Group {
+  LayoutMode: Top;
+  Background: $C.@InputBoxBackground;
+  Padding: (Top: 10, Bottom: 10, Left: 15, Right: 15);
+  Anchor: (Bottom: 8);
+
+  Group {
+    LayoutMode: Left;
+    Anchor: (Height: 26);
+
+    Label #PresetName {
+      Style: (
+        FontSize: 16,
+        RenderBold: true,
+        TextColor: #ffffff,
+        VerticalAlignment: Center
+      );
+      Padding: (Right: 15);
+    }
+
+    Label #PresetId {
+      Style: (
+        FontSize: 12,
+        TextColor: #ffffff(0.4),
+        VerticalAlignment: Center
+      );
+      Padding: (Right: 15);
+    }
+
+    Label #PresetPriority {
+      Style: (
+        FontSize: 12,
+        TextColor: #93844c,
+        VerticalAlignment: Center
+      );
+    }
+
+    Group { FlexWeight: 1; }
+
+    $C.@SmallSecondaryTextButton #EditButton {
+      Anchor: (Width: 80, Height: 26, Right: 15);
+      Text: "Edit";
+    }
+
+    $C.@CancelTextButton #DeleteButton {
+      Anchor: (Width: 40, Height: 26);
+      Text: "X";
+    }
+  }
+
+  Group {
+    LayoutMode: Left;
+    Anchor: (Height: 16, Top: 6);
+
+    Label {
+      Text: "Permission: ";
+      Style: (FontSize: 11, RenderBold: true, TextColor: #93844c, VerticalAlignment: Center);
+    }
+
+    Label #PresetPermission {
+      Style: (FontSize: 11, TextColor: #96a9be, VerticalAlignment: Center);
+    }
+  }
+}

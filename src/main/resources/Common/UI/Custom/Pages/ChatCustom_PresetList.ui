@@ -1,0 +1,94 @@
+$C = "../Common.ui";
+
+$C.@PageOverlay {
+  $C.@Container {
+    Anchor: (Width: 700, Height: 550);
+
+    #Title {
+      Group {
+        Anchor: (Height: 50);
+
+        Label #TitleLabel {
+          Style: (
+            FontSize: 24,
+            LetterSpacing: 2,
+            RenderUppercase: true,
+            RenderBold: true,
+            TextColor: #ccb588,
+            HorizontalAlignment: Center,
+            VerticalAlignment: Center
+          );
+          Text: "Preset Management";
+        }
+      }
+    }
+
+    #Content {
+      LayoutMode: Top;
+      Padding: (Top: 10, Left: 15, Right: 15, Bottom: 15);
+
+      Group {
+        LayoutMode: Left;
+        Anchor: (Height: 50, Bottom: 15);
+
+        $C.@TextButton #TabStyle {
+          Text: "Style";
+          FlexWeight: 1;
+          Anchor: (Height: 44, Right: 8);
+        }
+
+        $C.@TextButton #TabPrefix {
+          Text: "Prefix";
+          FlexWeight: 1;
+          Anchor: (Height: 44, Right: 8);
+        }
+
+        $C.@TextButton #TabPronoun {
+          Text: "Pronoun";
+          FlexWeight: 1;
+          Anchor: (Height: 44, Right: 8);
+        }
+
+        $C.@TextButton #TabMessage {
+          Text: "Message";
+          FlexWeight: 1;
+          Anchor: (Height: 44);
+        }
+      }
+
+      Group {
+        LayoutMode: Left;
+        Anchor: (Height: 44, Bottom: 15);
+
+        $C.@TextButton #CreateButton {
+          Text: "Create New";
+          Anchor: (Width: 140, Height: 44);
+        }
+
+        Group { FlexWeight: 1; }
+
+        $C.@TextButton #CloseButton {
+          Text: "Close";
+          Anchor: (Width: 120, Height: 44);
+        }
+      }
+
+      Group #Separator {
+        Anchor: (Height: 1, Bottom: 15);
+        Background: (Color: #2b3542);
+      }
+
+      Group #PresetListContainer {
+        FlexWeight: 1;
+        LayoutMode: TopScrolling;
+        ScrollbarStyle: $C.@DefaultScrollbarStyle;
+
+        Group #PresetList {
+          LayoutMode: Top;
+        }
+      }
+    }
+  }
+}
+
+$C.@BackButton {}

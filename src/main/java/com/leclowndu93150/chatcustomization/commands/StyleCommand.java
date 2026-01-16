@@ -11,24 +11,29 @@ import com.hypixel.hytale.server.core.command.system.basecommands.AbstractPlayer
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
+import com.leclowndu93150.chatcustomization.config.ChatCustomizationConfig;
 import com.leclowndu93150.chatcustomization.data.ElementStyle;
 import com.leclowndu93150.chatcustomization.data.PlayerChatProfile;
 import com.leclowndu93150.chatcustomization.manager.ChatManager;
+import com.leclowndu93150.chatcustomization.util.Permissions;
 import javax.annotation.Nonnull;
 import java.util.Set;
+import java.util.function.Supplier;
 
 public class StyleCommand extends AbstractPlayerCommand {
     private static final Set<String> VALID_TARGETS = Set.of("prefix", "name", "pronouns", "suffix", "message");
     private static final Set<String> VALID_STYLES = Set.of("bold", "italic", "underline");
 
     private final ChatManager chatManager;
+    private final Supplier<ChatCustomizationConfig> configSupplier;
     private final RequiredArg<String> targetArg = this.withRequiredArg("target", "prefix, name, pronouns, suffix, or message", ArgTypes.STRING);
     private final RequiredArg<String> styleArg = this.withRequiredArg("style", "bold, italic, or underline", ArgTypes.STRING);
     private final DefaultArg<String> valueArg = this.withDefaultArg("value", "on or off (toggles if not specified)", ArgTypes.STRING, "", "");
 
-    public StyleCommand(@Nonnull ChatManager chatManager) {
+    public StyleCommand(@Nonnull ChatManager chatManager, @Nonnull Supplier<ChatCustomizationConfig> configSupplier) {
         super("style", "Set text styles (bold, italic, underline) for any chat element");
         this.chatManager = chatManager;
+        this.configSupplier = configSupplier;
     }
 
     @Override
@@ -39,6 +44,12 @@ public class StyleCommand extends AbstractPlayerCommand {
     @Override
     protected void execute(@Nonnull CommandContext context, @Nonnull Store<EntityStore> store,
                           @Nonnull Ref<EntityStore> ref, @Nonnull PlayerRef playerRef, @Nonnull World world) {
+        ChatCustomizationConfig config = configSupplier.get();
+        if (config.getRequirePermissionForStyles() && !Permissions.hasPermission(playerRef, config.getPermissionStyles())) {
+            context.sendMessage(Message.raw("You don't have permission to use this command.").color("#FF5555"));
+            return;
+        }
+
         String target = targetArg.get(context).toLowerCase();
         String style = styleArg.get(context).toLowerCase();
         String value = valueArg.get(context).toLowerCase();

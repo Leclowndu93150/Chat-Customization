@@ -47,6 +47,9 @@ public class ChatCustomizationConfig {
         .append(new KeyedCodec<>("PermissionGradient", Codec.STRING), ChatCustomizationConfig::setPermissionGradient, ChatCustomizationConfig::getPermissionGradient).add()
         .append(new KeyedCodec<>("PermissionRainbow", Codec.STRING), ChatCustomizationConfig::setPermissionRainbow, ChatCustomizationConfig::getPermissionRainbow).add()
         .append(new KeyedCodec<>("PermissionAdmin", Codec.STRING), ChatCustomizationConfig::setPermissionAdmin, ChatCustomizationConfig::getPermissionAdmin).add()
+        .append(new KeyedCodec<>("RequirePermissionForEditor", Codec.BOOLEAN), ChatCustomizationConfig::setRequirePermissionForEditor, ChatCustomizationConfig::getRequirePermissionForEditor).add()
+        .append(new KeyedCodec<>("PresetsEnabled", Codec.BOOLEAN), ChatCustomizationConfig::setPresetsEnabled, ChatCustomizationConfig::getPresetsEnabled).add()
+        .append(new KeyedCodec<>("AllowCustomWithPresets", Codec.BOOLEAN), ChatCustomizationConfig::setAllowCustomWithPresets, ChatCustomizationConfig::getAllowCustomWithPresets).add()
         .build();
 
     private String commentColors = "Available colors: BLACK, DARK_BLUE, DARK_GREEN, DARK_AQUA, DARK_RED, DARK_PURPLE, GOLD, GRAY, DARK_GRAY, BLUE, GREEN, AQUA, RED, LIGHT_PURPLE, YELLOW, WHITE, PINK, ORANGE, CYAN, LIME";
@@ -96,6 +99,10 @@ public class ChatCustomizationConfig {
     private String permissionGradient = "chatcustom.gradient";
     private String permissionRainbow = "chatcustom.rainbow";
     private String permissionAdmin = "chatcustom.admin";
+
+    private boolean requirePermissionForEditor = false;
+    private boolean presetsEnabled = true;
+    private boolean allowCustomWithPresets = true;
 
     public ChatCustomizationConfig() {}
 
@@ -186,4 +193,11 @@ public class ChatCustomizationConfig {
     public void setPermissionRainbow(String v) { this.permissionRainbow = v; }
     public String getPermissionAdmin() { return permissionAdmin; }
     public void setPermissionAdmin(String v) { this.permissionAdmin = v; }
+
+    public boolean getRequirePermissionForEditor() { return requirePermissionForEditor; }
+    public void setRequirePermissionForEditor(boolean v) { this.requirePermissionForEditor = v; }
+    public boolean getPresetsEnabled() { return presetsEnabled; }
+    public void setPresetsEnabled(boolean v) { this.presetsEnabled = v; }
+    public boolean getAllowCustomWithPresets() { return allowCustomWithPresets; }
+    public void setAllowCustomWithPresets(boolean v) { this.allowCustomWithPresets = v; }
 }

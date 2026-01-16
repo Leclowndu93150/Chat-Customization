@@ -10,18 +10,23 @@ import com.hypixel.hytale.server.core.command.system.basecommands.AbstractPlayer
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
+import com.leclowndu93150.chatcustomization.config.ChatCustomizationConfig;
 import com.leclowndu93150.chatcustomization.manager.ChatManager;
 import com.leclowndu93150.chatcustomization.util.ArgumentParser;
+import com.leclowndu93150.chatcustomization.util.Permissions;
 import javax.annotation.Nonnull;
+import java.util.function.Supplier;
 
 public class SuffixCommand extends AbstractPlayerCommand {
     private final ChatManager chatManager;
+    private final Supplier<ChatCustomizationConfig> configSupplier;
     private final int maxLength;
     private final RequiredArg<String> suffixArg = this.withRequiredArg("suffix", "Your chat suffix (use \"quotes\" for spaces)", ArgTypes.STRING);
 
-    public SuffixCommand(@Nonnull ChatManager chatManager, int maxLength) {
+    public SuffixCommand(@Nonnull ChatManager chatManager, @Nonnull Supplier<ChatCustomizationConfig> configSupplier, int maxLength) {
         super("suffix", "Set your chat suffix");
         this.chatManager = chatManager;
+        this.configSupplier = configSupplier;
         this.maxLength = maxLength;
     }
 
@@ -33,6 +38,12 @@ public class SuffixCommand extends AbstractPlayerCommand {
     @Override
     protected void execute(@Nonnull CommandContext context, @Nonnull Store<EntityStore> store,
                           @Nonnull Ref<EntityStore> ref, @Nonnull PlayerRef playerRef, @Nonnull World world) {
+        ChatCustomizationConfig config = configSupplier.get();
+        if (config.getRequirePermissionForSuffix() && !Permissions.hasPermission(playerRef, config.getPermissionSuffix())) {
+            context.sendMessage(Message.raw("You don't have permission to use this command.").color("#FF5555"));
+            return;
+        }
+
         String suffix = ArgumentParser.stripQuotes(suffixArg.get(context));
 
         if (suffix.length() > maxLength) {

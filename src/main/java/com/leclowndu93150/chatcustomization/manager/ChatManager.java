@@ -102,4 +102,9 @@ public class ChatManager {
     public void save() {
         dataManager.saveProfiles(profiles);
     }
+
+    @Nonnull
+    public PlayerChatProfile getOrCreateProfile(@Nonnull UUID playerUuid) {
+        return profiles.computeIfAbsent(playerUuid, k -> PlayerChatProfile.empty());
+    }
 }

@@ -11,22 +11,27 @@ import com.hypixel.hytale.server.core.command.system.basecommands.AbstractPlayer
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
+import com.leclowndu93150.chatcustomization.config.ChatCustomizationConfig;
 import com.leclowndu93150.chatcustomization.manager.ChatManager;
 import com.leclowndu93150.chatcustomization.util.ColorUtil;
+import com.leclowndu93150.chatcustomization.util.Permissions;
 import javax.annotation.Nonnull;
 import java.util.Set;
+import java.util.function.Supplier;
 
 public class GradientCommand extends AbstractPlayerCommand {
     private static final Set<String> VALID_TARGETS = Set.of("prefix", "name", "pronouns", "suffix", "message");
 
     private final ChatManager chatManager;
+    private final Supplier<ChatCustomizationConfig> configSupplier;
     private final RequiredArg<String> targetArg = this.withRequiredArg("target", "prefix, name, pronouns, suffix, or message", ArgTypes.STRING);
     private final DefaultArg<String> startColorArg = this.withDefaultArg("start", "Start color (or 'clear')", ArgTypes.STRING, "", "");
     private final DefaultArg<String> endColorArg = this.withDefaultArg("end", "End color", ArgTypes.STRING, "", "");
 
-    public GradientCommand(@Nonnull ChatManager chatManager) {
+    public GradientCommand(@Nonnull ChatManager chatManager, @Nonnull Supplier<ChatCustomizationConfig> configSupplier) {
         super("gradient", "Set a color gradient for any chat element");
         this.chatManager = chatManager;
+        this.configSupplier = configSupplier;
     }
 
     @Override
@@ -37,6 +42,12 @@ public class GradientCommand extends AbstractPlayerCommand {
     @Override
     protected void execute(@Nonnull CommandContext context, @Nonnull Store<EntityStore> store,
                           @Nonnull Ref<EntityStore> ref, @Nonnull PlayerRef playerRef, @Nonnull World world) {
+        ChatCustomizationConfig config = configSupplier.get();
+        if (config.getRequirePermissionForGradient() && !Permissions.hasPermission(playerRef, config.getPermissionGradient())) {
+            context.sendMessage(Message.raw("You don't have permission to use this command.").color("#FF5555"));
+            return;
+        }
+
         String target = targetArg.get(context).toLowerCase();
         String startColor = startColorArg.get(context);
         String endColor = endColorArg.get(context);

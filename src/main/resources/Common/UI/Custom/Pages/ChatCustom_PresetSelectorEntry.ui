@@ -1,0 +1,38 @@
+$C = "../Common.ui";
+
+Group {
+  LayoutMode: Top;
+  Background: $C.@InputBoxBackground;
+  Padding: (Top: 12, Bottom: 12, Left: 15, Right: 15);
+  Anchor: (Bottom: 8);
+
+  Group {
+    LayoutMode: Left;
+    Anchor: (Height: 30);
+
+    Label #PresetName {
+      Style: (
+        FontSize: 16,
+        RenderBold: true,
+        TextColor: #ffffff,
+        VerticalAlignment: Center
+      );
+      Padding: (Right: 15);
+    }
+
+    Label #PresetDescription {
+      Style: (
+        FontSize: 12,
+        TextColor: #6e7da1,
+        VerticalAlignment: Center
+      );
+    }
+
+    Group { FlexWeight: 1; }
+
+    $C.@TextButton #ApplyButton {
+      Anchor: (Width: 100, Height: 30);
+      Text: "Apply";
+    }
+  }
+}

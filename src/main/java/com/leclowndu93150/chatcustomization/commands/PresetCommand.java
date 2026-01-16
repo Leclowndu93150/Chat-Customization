@@ -3,31 +3,29 @@ package com.leclowndu93150.chatcustomization.commands;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.protocol.GameMode;
-import com.hypixel.hytale.server.core.Message;
+import com.hypixel.hytale.protocol.packets.interface_.CustomPageLifetime;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
 import com.hypixel.hytale.server.core.command.system.basecommands.AbstractPlayerCommand;
 import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
-import com.leclowndu93150.chatcustomization.config.ChatCustomizationConfig;
-import com.leclowndu93150.chatcustomization.gui.ChatEditorGui;
+import com.leclowndu93150.chatcustomization.gui.PlayerPresetSelectorGui;
 import com.leclowndu93150.chatcustomization.manager.ChatManager;
-import com.leclowndu93150.chatcustomization.util.Permissions;
+import com.leclowndu93150.chatcustomization.manager.PresetManager;
 import javax.annotation.Nonnull;
-import java.util.function.Supplier;
 
-public class ChatEditorCommand extends AbstractPlayerCommand {
+public class PresetCommand extends AbstractPlayerCommand {
 
+    private final PresetManager presetManager;
     private final ChatManager chatManager;
-    private final Supplier<ChatCustomizationConfig> configSupplier;
 
-    public ChatEditorCommand(@Nonnull ChatManager chatManager, @Nonnull Supplier<ChatCustomizationConfig> configSupplier) {
-        super("chateditor", "Open the visual chat customization editor");
-        this.addAliases("chatgui", "ce");
+    public PresetCommand(@Nonnull PresetManager presetManager, @Nonnull ChatManager chatManager) {
+        super("preset", "View and apply chat presets");
+        this.addAliases("presets");
         this.setPermissionGroup(GameMode.Adventure);
+        this.presetManager = presetManager;
         this.chatManager = chatManager;
-        this.configSupplier = configSupplier;
     }
 
     @Override
@@ -38,13 +36,8 @@ public class ChatEditorCommand extends AbstractPlayerCommand {
     @Override
     protected void execute(@Nonnull CommandContext context, @Nonnull Store<EntityStore> store,
                           @Nonnull Ref<EntityStore> ref, @Nonnull PlayerRef playerRef, @Nonnull World world) {
-        ChatCustomizationConfig config = configSupplier.get();
-        if (config.getRequirePermissionForEditor() && !Permissions.canOpenEditor(playerRef)) {
-            context.sendMessage(Message.raw("You don't have permission to use this command.").color("#FF5555"));
-            return;
-        }
-
         Player player = store.getComponent(ref, Player.getComponentType());
-        player.getPageManager().openCustomPage(ref, store, new ChatEditorGui(playerRef, chatManager));
+        player.getPageManager().openCustomPage(ref, store,
+            new PlayerPresetSelectorGui(playerRef, presetManager, chatManager, CustomPageLifetime.CanDismiss));
     }
 }

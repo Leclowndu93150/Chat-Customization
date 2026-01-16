@@ -1,0 +1,131 @@
+$C = "../Common.ui";
+
+@FieldLabelStyle = LabelStyle(FontSize: 12, TextColor: #96a9be, RenderBold: true, RenderUppercase: true);
+@FieldDescStyle = LabelStyle(FontSize: 11, TextColor: #6e7da1);
+@SectionLabelStyle = LabelStyle(FontSize: 14, TextColor: #93844c, RenderBold: true, RenderUppercase: true);
+
+$C.@PageOverlay {
+  $C.@Container {
+    Anchor: (Width: 500, Height: 500);
+
+    #Title {
+      Group {
+        Anchor: (Height: 50);
+
+        Label #TitleLabel {
+          Style: (
+            FontSize: 24,
+            LetterSpacing: 2,
+            RenderUppercase: true,
+            RenderBold: true,
+            TextColor: #ccb588,
+            HorizontalAlignment: Center,
+            VerticalAlignment: Center
+          );
+          Text: "Edit Message Preset";
+        }
+      }
+    }
+
+    #Content {
+      LayoutMode: TopScrolling;
+      ScrollbarStyle: $C.@DefaultScrollbarStyle;
+      Padding: (Top: 10, Right: 20, Left: 20, Bottom: 20);
+
+      Group {
+        LayoutMode: Top;
+        Anchor: (Bottom: 15);
+
+        Label { Text: "ID"; Style: @FieldLabelStyle; Anchor: (Bottom: 4); }
+        Label { Text: "Unique identifier (lowercase, no spaces)"; Style: @FieldDescStyle; Anchor: (Bottom: 4); }
+        $C.@TextField #IdField {
+          Anchor: (Width: 300, Height: 32, Bottom: 12);
+        }
+
+        Label { Text: "DISPLAY NAME"; Style: @FieldLabelStyle; Anchor: (Bottom: 4); }
+        $C.@TextField #DisplayNameField {
+          Anchor: (Width: 300, Height: 32, Bottom: 12);
+        }
+
+        Label { Text: "PRIORITY"; Style: @FieldLabelStyle; Anchor: (Bottom: 4); }
+        Label { Text: "Higher priority = checked first (0-100)"; Style: @FieldDescStyle; Anchor: (Bottom: 4); }
+        $C.@TextField #PriorityField {
+          Anchor: (Width: 120, Height: 32);
+        }
+      }
+
+      Group #Separator1 {
+        Anchor: (Height: 1, Bottom: 15);
+        Background: (Color: #2b3542);
+      }
+
+      Group {
+        LayoutMode: Top;
+        Anchor: (Bottom: 15);
+
+        Label { Text: "PREVIEW"; Style: @SectionLabelStyle; Anchor: (Bottom: 8); }
+
+        Group #PreviewContainer {
+          Anchor: (Height: 50, Bottom: 15);
+          Background: (Color: #0a0f17);
+          Padding: (Horizontal: 14, Vertical: 12);
+          LayoutMode: Left;
+
+          Label #PreviewName { Text: "PlayerName"; Style: (FontSize: 16, TextColor: #ffffff); }
+          Label #PreviewSeparator { Text: ": "; Style: (FontSize: 16, TextColor: #ffffff); }
+          Label #PreviewMessage { Text: "Hello, World!"; Style: (FontSize: 16, TextColor: #ffffff); }
+        }
+      }
+
+      Group #Separator2 {
+        Anchor: (Height: 1, Bottom: 15);
+        Background: (Color: #2b3542);
+      }
+
+      Group {
+        LayoutMode: Top;
+        Anchor: (Bottom: 15);
+
+        Label { Text: "MESSAGE STYLE"; Style: @SectionLabelStyle; Anchor: (Bottom: 8); }
+
+        Group {
+          LayoutMode: Left;
+          Anchor: (Height: 120, Bottom: 10);
+
+          ColorPicker #MessageColorPicker {
+            Anchor: (Width: 180, Height: 120);
+            Style: $C.@DefaultColorPickerStyle;
+          }
+        }
+
+        Group {
+          LayoutMode: Left;
+          Anchor: (Height: 28);
+
+          $C.@CheckBoxWithLabel #MessageBold { @Text = "Bold"; Anchor: (Right: 15); }
+          $C.@CheckBoxWithLabel #MessageItalic { @Text = "Italic"; Anchor: (Right: 15); }
+          $C.@CheckBoxWithLabel #MessageUnderline { @Text = "Underline"; }
+        }
+      }
+
+      Group { FlexWeight: 1; }
+
+      Group {
+        LayoutMode: Left;
+        Anchor: (Height: 50, Top: 15);
+
+        $C.@TextButton #SaveButton {
+          Text: "Save";
+          Anchor: (Width: 120, Height: 44, Right: 12);
+        }
+
+        $C.@CancelTextButton #CancelButton {
+          Text: "Cancel";
+          Anchor: (Width: 120, Height: 44);
+        }
+      }
+    }
+  }
+}
+
+$C.@BackButton {}

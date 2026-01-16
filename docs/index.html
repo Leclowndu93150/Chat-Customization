@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChatCustomization Documentation</title>
+    <style>
+        :root {
+            --bg-primary: #0d1117;
+            --bg-secondary: #161b22;
+            --bg-tertiary: #21262d;
+            --text-primary: #c9d1d9;
+            --text-secondary: #8b949e;
+            --text-muted: #6e7681;
+            --accent-gold: #ccb588;
+            --accent-blue: #58a6ff;
+            --accent-green: #3fb950;
+            --accent-red: #f85149;
+            --border-color: #30363d;
+            --code-bg: #0d1117;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 280px;
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border-color);
+            padding: 24px 16px;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .sidebar-logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--accent-gold);
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+
+        .sidebar-version {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 32px;
+        }
+
+        .nav-section {
+            margin-bottom: 24px;
+        }
+
+        .nav-section-title {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            padding-left: 8px;
+        }
+
+        .nav-link {
+            display: block;
+            padding: 8px 12px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: all 0.15s ease;
+        }
+
+        .nav-link:hover {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+        }
+
+        .nav-link.active {
+            background: rgba(88, 166, 255, 0.15);
+            color: var(--accent-blue);
+        }
+
+        .main-content {
+            margin-left: 280px;
+            flex: 1;
+            padding: 48px 64px;
+            max-width: 900px;
+        }
+
+        h1 {
+            font-size: 32px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        h2 {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-top: 48px;
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-top: 32px;
+            margin-bottom: 12px;
+        }
+
+        h4 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-top: 24px;
+            margin-bottom: 8px;
+        }
+
+        p {
+            margin-bottom: 16px;
+            color: var(--text-secondary);
+        }
+
+        .lead {
+            font-size: 18px;
+            color: var(--text-secondary);
+            margin-bottom: 32px;
+        }
+
+        code {
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+            background: var(--bg-tertiary);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 85%;
+            color: var(--accent-blue);
+        }
+
+        pre {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 16px;
+            overflow-x: auto;
+            margin-bottom: 16px;
+        }
+
+        pre code {
+            background: none;
+            padding: 0;
+            font-size: 13px;
+            color: var(--text-primary);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 24px;
+        }
+
+        th, td {
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            background: var(--bg-secondary);
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        td {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        td code {
+            color: var(--accent-green);
+        }
+
+        .command-box {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 12px;
+        }
+
+        .command-box .cmd {
+            font-family: monospace;
+            font-size: 15px;
+            color: var(--accent-green);
+            margin-bottom: 4px;
+        }
+
+        .command-box .desc {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .callout {
+            padding: 16px 20px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            border-left: 4px solid;
+        }
+
+        .callout-info {
+            background: rgba(88, 166, 255, 0.1);
+            border-color: var(--accent-blue);
+        }
+
+        .callout-warning {
+            background: rgba(210, 153, 34, 0.1);
+            border-color: #d29922;
+        }
+
+        .callout-tip {
+            background: rgba(63, 185, 80, 0.1);
+            border-color: var(--accent-green);
+        }
+
+        .callout-title {
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 4px;
+            color: var(--text-primary);
+        }
+
+        .callout p {
+            margin: 0;
+            font-size: 14px;
+        }
+
+        ul, ol {
+            margin-bottom: 16px;
+            padding-left: 24px;
+        }
+
+        li {
+            margin-bottom: 8px;
+            color: var(--text-secondary);
+        }
+
+        .perm {
+            display: inline-block;
+            background: var(--bg-tertiary);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 12px;
+            color: var(--accent-gold);
+        }
+
+        .section {
+            margin-bottom: 64px;
+        }
+
+        .footer {
+            margin-top: 64px;
+            padding-top: 32px;
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+
+        .footer a {
+            color: var(--accent-blue);
+            text-decoration: none;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--bg-tertiary);
+            border-radius: 4px;
+            border: 2px solid var(--bg-primary);
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #3d444d;
+        }
+
+        * {
+            scrollbar-width: thin;
+            scrollbar-color: var(--bg-tertiary) var(--bg-primary);
+        }
+
+        .sidebar::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            border-color: var(--bg-secondary);
+        }
+
+        .sidebar {
+            scrollbar-color: var(--bg-tertiary) var(--bg-secondary);
+        }
+
+        .screenshot {
+            max-width: 100%;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            margin: 16px 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .screenshot-caption {
+            font-size: 13px;
+            color: var(--text-muted);
+            text-align: center;
+            margin-top: -8px;
+            margin-bottom: 16px;
+        }
+
+        @media (max-width: 900px) {
+            .sidebar {
+                display: none;
+            }
+            .main-content {
+                margin-left: 0;
+                padding: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav class="sidebar">
+            <div class="sidebar-logo">ChatCustomization</div>
+
+            <div class="nav-section">
+                <div class="nav-section-title">Getting Started</div>
+                <a href="#introduction" class="nav-link">Introduction</a>
+                <a href="#installation" class="nav-link">Installation</a>
+                <a href="#quick-start" class="nav-link">Quick Start</a>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-section-title">Player Commands</div>
+                <a href="#text-commands" class="nav-link">Text Customization</a>
+                <a href="#color-commands" class="nav-link">Color Commands</a>
+                <a href="#style-commands" class="nav-link">Style Commands</a>
+                <a href="#chat-editor" class="nav-link">Chat Editor GUI</a>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-section-title">Preset System</div>
+                <a href="#preset-overview" class="nav-link">Overview</a>
+                <a href="#style-presets" class="nav-link">Style Presets</a>
+                <a href="#prefix-presets" class="nav-link">Prefix Presets</a>
+                <a href="#pronoun-presets" class="nav-link">Pronoun Presets</a>
+                <a href="#message-presets" class="nav-link">Message Presets</a>
+                <a href="#player-presets" class="nav-link">Using Presets</a>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-section-title">Admin Guide</div>
+                <a href="#admin-commands" class="nav-link">Admin Commands</a>
+                <a href="#preset-management" class="nav-link">Preset Management</a>
+                <a href="#preset-editor" class="nav-link">Preset Editor UI</a>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-section-title">Configuration</div>
+                <a href="#config-files" class="nav-link">Config Files</a>
+                <a href="#permissions" class="nav-link">Permissions</a>
+            </div>
+        </nav>
+
+        <main class="main-content">
+            <section id="introduction" class="section">
+                <h1>ChatCustomization Documentation</h1>
+                <p class="lead">
+                    A comprehensive chat customization system for Hytale servers. Let players personalize their chat appearance with prefixes, suffixes, nicknames, pronouns, colors, gradients, and rainbow effects.
+                </p>
+
+                <h3>Features</h3>
+                <ul>
+                    <li><strong>Custom Prefixes & Suffixes</strong> - Players can set custom tags before/after their name</li>
+                    <li><strong>Nicknames</strong> - Display a custom name instead of username</li>
+                    <li><strong>Pronouns</strong> - Show pronouns in chat (e.g., he/him, she/her, they/them)</li>
+                    <li><strong>Color Customization</strong> - Set colors for name, message, prefix, suffix, and pronouns</li>
+                    <li><strong>Text Styles</strong> - Bold, italic, and underline formatting</li>
+                    <li><strong>Gradients</strong> - Two-color gradient effects on any text element</li>
+                    <li><strong>Rainbow Text</strong> - Animated rainbow colors on any element</li>
+                    <li><strong>Chat Editor GUI</strong> - Visual editor for easy customization</li>
+                    <li><strong>Preset System</strong> - Admin-defined presets for consistent styling</li>
+                    <li><strong>Permission-Based</strong> - Fine-grained control over who can use what features</li>
+                </ul>
+            </section>
+
+            <section id="installation" class="section">
+                <h2>Installation</h2>
+                <ol>
+                    <li>Download the latest ChatCustomization JAR file</li>
+                    <li>Place the JAR in your server's <code>plugins</code> folder</li>
+                    <li>Restart your server</li>
+                    <li>Configuration files will be generated automatically</li>
+                </ol>
+
+                <div class="callout callout-info">
+                    <div class="callout-title">First Time Setup</div>
+                    <p>On first run, all features are enabled by default. Use the config to restrict features or require permissions.</p>
+                </div>
+            </section>
+
+            <section id="quick-start" class="section">
+                <h2>Quick Start</h2>
+                <p>Once installed, players can immediately customize their chat. Here are the most common commands:</p>
+
+                <div class="command-box">
+                    <div class="cmd">/chateditor</div>
+                    <div class="desc">Open the visual chat customization editor</div>
+                </div>
+                <div class="command-box">
+                    <div class="cmd">/prefix "My Tag"</div>
+                    <div class="desc">Set a custom prefix before your name</div>
+                </div>
+                <div class="command-box">
+                    <div class="cmd">/namecolor #FF5500</div>
+                    <div class="desc">Set your name color using hex code</div>
+                </div>
+                <div class="command-box">
+                    <div class="cmd">/preset</div>
+                    <div class="desc">Browse and apply preset chat styles</div>
+                </div>
+            </section>
+
+            <section id="text-commands" class="section">
+                <h2>Text Customization</h2>
+                <p>Commands for customizing text content in your chat messages.</p>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Command</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>/prefix &lt;text&gt;</code></td>
+                            <td>Set your chat prefix (shown before name)</td>
+                        </tr>
+                        <tr>
+                            <td><code>/suffix &lt;text&gt;</code></td>
+                            <td>Set your chat suffix (shown after name)</td>
+                        </tr>
+                        <tr>
+                            <td><code>/nickname &lt;name&gt;</code></td>
+                            <td>Set a custom display name</td>
+                        </tr>
+                        <tr>
+                            <td><code>/pronouns &lt;pronouns&gt;</code></td>
+                            <td>Set your pronouns (e.g., he/him, she/her)</td>
+                        </tr>
+                        <tr>
+                            <td><code>/resetformat</code></td>
+                            <td>Reset all customizations to default</td>
+                        </tr>
+                        <tr>
+                            <td><code>/chatprofile</code></td>
+                            <td>View your current chat profile settings</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="callout callout-tip">
+                    <div class="callout-title">Spaces in Text</div>
+                    <p>For text with spaces, use quotes: <code>/prefix "My Cool Tag"</code></p>
+                </div>
+            </section>
+
+            <section id="color-commands" class="section">
+                <h2>Color Commands</h2>
+                <p>Set colors for different parts of your chat message.</p>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Command</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>/namecolor &lt;color&gt;</code></td>
+                            <td>Set your name color</td>
+                        </tr>
+                        <tr>
+                            <td><code>/msgcolor &lt;color&gt;</code></td>
+                            <td>Set your message color</td>
+                        </tr>
+                        <tr>
+                            <td><code>/prefixcolor &lt;color&gt;</code></td>
+                            <td>Set your prefix color</td>
+                        </tr>
+                        <tr>
+                            <td><code>/suffixcolor &lt;color&gt;</code></td>
+                            <td>Set your suffix color</td>
+                        </tr>
+                        <tr>
+                            <td><code>/pronounscolor &lt;color&gt;</code></td>
+                            <td>Set your pronouns color</td>
+                        </tr>
+                        <tr>
+                            <td><code>/colors</code></td>
+                            <td>List all available color names</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h4>Color Formats</h4>
+                <ul>
+                    <li><strong>Hex codes:</strong> <code>#FF0000</code>, <code>#00FF00</code>, <code>#0000FF</code></li>
+                    <li><strong>Named colors:</strong> RED, BLUE, GREEN, YELLOW, GOLD, AQUA, etc.</li>
+                </ul>
+            </section>
+
+            <section id="style-commands" class="section">
+                <h2>Style Commands</h2>
+                <p>Apply text styles, gradients, and rainbow effects to any chat element.</p>
+
+                <h3>Text Styles</h3>
+                <div class="command-box">
+                    <div class="cmd">/style &lt;target&gt; &lt;style&gt; [on/off]</div>
+                    <div class="desc">Set bold, italic, or underline on prefix, name, pronouns, suffix, or message</div>
+                </div>
+
+                <p>Examples:</p>
+                <ul>
+                    <li><code>/style name bold on</code> - Make your name bold</li>
+                    <li><code>/style message italic</code> - Toggle italics on messages</li>
+                    <li><code>/style prefix underline off</code> - Remove underline from prefix</li>
+                </ul>
+
+                <h3>Gradients</h3>
+                <div class="command-box">
+                    <div class="cmd">/gradient &lt;target&gt; &lt;start&gt; &lt;end&gt;</div>
+                    <div class="desc">Apply a two-color gradient to any element</div>
+                </div>
+
+                <p>Examples:</p>
+                <ul>
+                    <li><code>/gradient name #FF0000 #0000FF</code> - Red to blue gradient on name</li>
+                    <li><code>/gradient message GOLD YELLOW</code> - Gold to yellow gradient on messages</li>
+                    <li><code>/gradient name clear</code> - Remove gradient from name</li>
+                </ul>
+
+                <h3>Rainbow</h3>
+                <div class="command-box">
+                    <div class="cmd">/rainbow &lt;target&gt; [on/off]</div>
+                    <div class="desc">Enable rainbow colors on any element</div>
+                </div>
+
+                <p>Examples:</p>
+                <ul>
+                    <li><code>/rainbow name on</code> - Enable rainbow on your name</li>
+                    <li><code>/rainbow message</code> - Toggle rainbow on messages</li>
+                </ul>
+            </section>
+
+            <section id="chat-editor" class="section">
+                <h2>Chat Editor GUI</h2>
+                <p>The visual chat editor provides an easy way to customize all aspects of your chat appearance.</p>
+
+                <div class="command-box">
+                    <div class="cmd">/chateditor</div>
+                    <div class="desc">Open the chat editor GUI (aliases: /chatgui, /ce)</div>
+                </div>
+
+                <h4>Editor Features</h4>
+                <ul>
+                    <li>Set prefix, suffix, nickname, and pronouns with text inputs</li>
+                    <li>Pick colors using a visual color picker</li>
+                    <li>Toggle bold, italic, and underline styles</li>
+                    <li>Configure gradients with start/end color selection</li>
+                    <li>Enable/disable rainbow effect</li>
+                    <li>Live preview of your chat appearance</li>
+                </ul>
+            </section>
+
+            <section id="preset-overview" class="section">
+                <h2>Preset System</h2>
+                <p>Admins can create preset configurations that players can quickly apply to their chat. There are four types of presets:</p>
+
+                <ul>
+                    <li><strong>Style Presets</strong> - Complete chat profiles with all settings</li>
+                    <li><strong>Prefix Presets</strong> - Just prefix text and styling</li>
+                    <li><strong>Pronoun Presets</strong> - Just pronouns and styling</li>
+                    <li><strong>Message Presets</strong> - Just message text styling</li>
+                </ul>
+
+                <p>Each preset requires a permission to use. Players can only see and apply presets they have permission for.</p>
+
+                <img src="images/preset-selector.png" alt="Preset Selector GUI" class="screenshot">
+                <p class="screenshot-caption">Players can browse and apply presets they have permission for</p>
+            </section>
+
+            <section id="style-presets" class="section">
+                <h2>Style Presets</h2>
+                <p>Style presets are complete chat profiles that include all customization options.</p>
+
+                <h4>What's Included</h4>
+                <ul>
+                    <li>Prefix, suffix, nickname, and pronouns text</li>
+                    <li>Colors for all elements</li>
+                    <li>Bold, italic, underline styles for all elements</li>
+                    <li>Gradient and rainbow settings for all elements</li>
+                </ul>
+
+                <h4>Permission Format</h4>
+                <p><code>chatcustom.preset.style.&lt;preset_id&gt;</code></p>
+            </section>
+
+            <section id="prefix-presets" class="section">
+                <h2>Prefix Presets</h2>
+                <p>Prefix presets contain only the prefix text and its styling. Useful for rank tags or titles.</p>
+
+                <h4>What's Included</h4>
+                <ul>
+                    <li>Prefix text</li>
+                    <li>Prefix color</li>
+                    <li>Prefix styles (bold, italic, underline)</li>
+                    <li>Prefix gradient/rainbow settings</li>
+                </ul>
+
+                <h4>Permission Format</h4>
+                <p><code>chatcustom.preset.prefix.&lt;preset_id&gt;</code></p>
+            </section>
+
+            <section id="pronoun-presets" class="section">
+                <h2>Pronoun Presets</h2>
+                <p>Pronoun presets contain predefined pronouns with optional styling.</p>
+
+                <h4>What's Included</h4>
+                <ul>
+                    <li>Pronouns text</li>
+                    <li>Pronouns color</li>
+                    <li>Pronouns styles (bold, italic, underline)</li>
+                </ul>
+
+                <h4>Permission Format</h4>
+                <p><code>chatcustom.preset.pronoun.&lt;preset_id&gt;</code></p>
+            </section>
+
+            <section id="message-presets" class="section">
+                <h2>Message Presets</h2>
+                <p>Message presets define styling for player chat messages only.</p>
+
+                <h4>What's Included</h4>
+                <ul>
+                    <li>Message color</li>
+                    <li>Message styles (bold, italic, underline)</li>
+                </ul>
+
+                <h4>Permission Format</h4>
+                <p><code>chatcustom.preset.message.&lt;preset_id&gt;</code></p>
+            </section>
+
+            <section id="player-presets" class="section">
+                <h2>Using Presets (Players)</h2>
+                <p>Players can browse and apply presets they have permission for.</p>
+
+                <div class="command-box">
+                    <div class="cmd">/preset</div>
+                    <div class="desc">Open the preset selector GUI</div>
+                </div>
+
+                <p>The preset selector shows all available presets organized by type (Style, Prefix, Pronoun, Message). Click on any preset to apply it to your chat profile.</p>
+
+                <div class="callout callout-tip">
+                    <div class="callout-title">Permissions</div>
+                    <p>You'll only see presets you have permission for. Ask an admin to grant you access to additional presets.</p>
+                </div>
+            </section>
+
+            <section id="admin-commands" class="section">
+                <h2>Admin Commands</h2>
+                <p>Administrative commands for managing ChatCustomization.</p>
+
+                <div class="command-box">
+                    <div class="cmd">/chatcustom preset</div>
+                    <div class="desc">Open the preset management UI — <span class="perm">chatcustom.admin.presets</span></div>
+                </div>
+
+                <div class="command-box">
+                    <div class="cmd">/chatcustom reload</div>
+                    <div class="desc">Reload configuration and presets — <span class="perm">chatcustom.admin.reload</span></div>
+                </div>
+
+                <div class="callout callout-info">
+                    <div class="callout-title">Alias</div>
+                    <p>You can use <code>/cc preset</code> and <code>/cc reload</code> as shorthands.</p>
+                </div>
+            </section>
+
+            <section id="preset-management" class="section">
+                <h2>Preset Management</h2>
+                <p>Admins can create, edit, and delete presets using the in-game UI.</p>
+
+                <div class="command-box">
+                    <div class="cmd">/chatcustom preset</div>
+                    <div class="desc">Open the preset management UI</div>
+                </div>
+
+                <h3>Preset List UI</h3>
+                <p>The preset list shows all configured presets organized by type (Style, Prefix, Pronoun, Message). From here you can:</p>
+                <ul>
+                    <li>Switch between preset types using the tabs</li>
+                    <li>View all existing presets with their IDs and permissions</li>
+                    <li>Create new presets</li>
+                    <li>Edit existing presets</li>
+                    <li>Delete presets (click delete once to confirm)</li>
+                </ul>
+
+                <img src="images/preset-management.png" alt="Preset Management UI" class="screenshot">
+                <p class="screenshot-caption">The preset management interface with tabs for each preset type</p>
+            </section>
+
+            <section id="preset-editor" class="section">
+                <h2>Preset Editor UI</h2>
+                <p>The preset editor allows you to configure all aspects of a preset.</p>
+
+                <img src="images/create-preset.png" alt="Create Style Preset" class="screenshot">
+                <p class="screenshot-caption">Creating a new style preset with full customization options</p>
+
+                <h3>Style Preset Editor</h3>
+                <p>Full preset with all customization options:</p>
+                <ul>
+                    <li><strong>ID</strong> - Unique identifier (used in permission, cannot be changed after creation)</li>
+                    <li><strong>Display Name</strong> - Human-readable name shown to players</li>
+                    <li><strong>Priority</strong> - Higher priority presets shown first (0-100)</li>
+                    <li><strong>Prefix/Suffix/Nickname/Pronouns</strong> - Text values</li>
+                    <li><strong>Styles</strong> - Color picker and bold/italic/underline for each element</li>
+                </ul>
+
+                <img src="images/edit-preset.png" alt="Edit Preset" class="screenshot">
+                <p class="screenshot-caption">Editing an existing preset</p>
+
+                <h3>Other Preset Editors</h3>
+                <p>Prefix, Pronoun, and Message preset editors are simplified versions with only the relevant fields for that preset type.</p>
+            </section>
+
+            <section id="config-files" class="section">
+                <h2>Configuration Files</h2>
+                <p>All configuration is stored in JSON files in the plugin data folder.</p>
+
+                <h3>config.json</h3>
+                <p>Main configuration file:</p>
+
+                <pre><code>{
+  "MaxPrefixLength": 16,
+  "MaxSuffixLength": 16,
+  "MaxNicknameLength": 24,
+  "MaxPronounsLength": 12,
+  "DefaultNameColor": "YELLOW",
+  "DefaultMessageColor": "WHITE",
+  "AllowGradients": true,
+  "AllowRainbow": true,
+  "AllowBold": true,
+  "AllowItalic": true,
+  "AllowUnderline": true,
+  "RequirePermissionForPrefix": false,
+  "RequirePermissionForSuffix": false,
+  "RequirePermissionForNickname": false,
+  "RequirePermissionForPronouns": false,
+  "RequirePermissionForColors": false,
+  "RequirePermissionForStyles": false,
+  "RequirePermissionForGradient": true,
+  "RequirePermissionForRainbow": true,
+  "RequirePermissionForEditor": false,
+  "PresetsEnabled": true,
+  "AllowCustomWithPresets": true
+}</code></pre>
+
+                <h3>Preset Files</h3>
+                <ul>
+                    <li><code>style_presets.json</code> - Style preset definitions</li>
+                    <li><code>prefix_presets.json</code> - Prefix preset definitions</li>
+                    <li><code>pronoun_presets.json</code> - Pronoun preset definitions</li>
+                    <li><code>message_presets.json</code> - Message preset definitions</li>
+                </ul>
+
+                <h3>Data Files</h3>
+                <ul>
+                    <li><code>chat_profiles.json</code> - Player chat profile data</li>
+                </ul>
+            </section>
+
+            <section id="permissions" class="section">
+                <h2>Permissions Reference</h2>
+
+                <h3>Admin Permissions</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Permission</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>chatcustom.admin.presets</code></td>
+                            <td>Manage presets via UI</td>
+                        </tr>
+                        <tr>
+                            <td><code>chatcustom.admin.reload</code></td>
+                            <td>Reload configuration</td>
+                        </tr>
+                        <tr>
+                            <td><code>chatcustom.admin.players</code></td>
+                            <td>Manage other players' profiles</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Command Permissions</h3>
+                <p>These are only required if <code>RequirePermissionFor*</code> is enabled in config:</p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Permission</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>chatcustom.prefix</code></td>
+                            <td>Use /prefix command</td>
+                        </tr>
+                        <tr>
+                            <td><code>chatcustom.suffix</code></td>
+                            <td>Use /suffix command</td>
+                        </tr>
+                        <tr>
+                            <td><code>chatcustom.nickname</code></td>
+                            <td>Use /nickname command</td>
+                        </tr>
+                        <tr>
+                            <td><code>chatcustom.pronouns</code></td>
+                            <td>Use /pronouns command</td>
+                        </tr>
+                        <tr>
+                            <td><code>chatcustom.colors</code></td>
+                            <td>Use color commands</td>
+                        </tr>
+                        <tr>
+                            <td><code>chatcustom.styles</code></td>
+                            <td>Use /style command</td>
+                        </tr>
+                        <tr>
+                            <td><code>chatcustom.gradient</code></td>
+                            <td>Use /gradient command</td>
+                        </tr>
+                        <tr>
+                            <td><code>chatcustom.rainbow</code></td>
+                            <td>Use /rainbow command</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Feature Permissions</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Permission</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>chatcustom.editor</code></td>
+                            <td>Open chat editor GUI</td>
+                        </tr>
+                        <tr>
+                            <td><code>chatcustom.style.bold</code></td>
+                            <td>Use bold formatting</td>
+                        </tr>
+                        <tr>
+                            <td><code>chatcustom.style.italic</code></td>
+                            <td>Use italic formatting</td>
+                        </tr>
+                        <tr>
+                            <td><code>chatcustom.style.underline</code></td>
+                            <td>Use underline formatting</td>
+                        </tr>
+                        <tr>
+                            <td><code>chatcustom.style.gradient</code></td>
+                            <td>Use gradient colors</td>
+                        </tr>
+                        <tr>
+                            <td><code>chatcustom.style.rainbow</code></td>
+                            <td>Use rainbow colors</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Preset Permissions</h3>
+                <p>Each preset generates its own permission node:</p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Format</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>chatcustom.preset.style.&lt;id&gt;</code></td>
+                            <td>Access to a style preset</td>
+                        </tr>
+                        <tr>
+                            <td><code>chatcustom.preset.prefix.&lt;id&gt;</code></td>
+                            <td>Access to a prefix preset</td>
+                        </tr>
+                        <tr>
+                            <td><code>chatcustom.preset.pronoun.&lt;id&gt;</code></td>
+                            <td>Access to a pronoun preset</td>
+                        </tr>
+                        <tr>
+                            <td><code>chatcustom.preset.message.&lt;id&gt;</code></td>
+                            <td>Access to a message preset</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <footer class="footer">
+                <p>
+                    ChatCustomization for Hytale |
+                    <a href="https://github.com/leclowndu93150/ChatCustomization">GitHub</a>
+                </p>
+            </footer>
+        </main>
+    </div>
+</body>
+</html>

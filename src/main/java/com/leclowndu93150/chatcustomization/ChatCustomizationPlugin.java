@@ -20,8 +20,11 @@ import com.leclowndu93150.chatcustomization.data.ElementStyle;
 import com.leclowndu93150.chatcustomization.data.PlayerChatProfile;
 import com.leclowndu93150.chatcustomization.manager.ChatManager;
 import com.leclowndu93150.chatcustomization.manager.DataManager;
+import com.leclowndu93150.chatcustomization.manager.PresetApplicationManager;
+import com.leclowndu93150.chatcustomization.manager.PresetManager;
 import com.leclowndu93150.chatcustomization.util.ColorUtil;
 import java.util.logging.Level;
+import java.util.function.Supplier;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -29,6 +32,8 @@ public class ChatCustomizationPlugin extends JavaPlugin {
     private final Config<ChatCustomizationConfig> config = this.withConfig(ChatCustomizationConfig.CODEC);
     private DataManager dataManager;
     private ChatManager chatManager;
+    private PresetManager presetManager;
+    private PresetApplicationManager presetApplicationManager;
 
     public ChatCustomizationPlugin(@Nonnull JavaPluginInit init) {
         super(init);
@@ -39,6 +44,8 @@ public class ChatCustomizationPlugin extends JavaPlugin {
         ChatCustomizationConfig cfg = this.config.get();
         this.dataManager = new DataManager(this.getDataDirectory(), this.getLogger());
         this.chatManager = new ChatManager(this.dataManager);
+        this.presetManager = new PresetManager(this.getDataDirectory(), this.getLogger());
+        this.presetApplicationManager = new PresetApplicationManager(this.presetManager, this.chatManager);
 
         EventRegistry eventRegistry = this.getEventRegistry();
         eventRegistry.registerGlobal(PlayerChatEvent.class, this::onPlayerChat);
@@ -49,27 +56,38 @@ public class ChatCustomizationPlugin extends JavaPlugin {
     protected void start() {
         ChatCustomizationConfig cfg = this.config.get();
         this.config.save();
-        this.getCommandRegistry().registerCommand(new PrefixCommand(this.chatManager, cfg.getMaxPrefixLength()));
-        this.getCommandRegistry().registerCommand(new SuffixCommand(this.chatManager, cfg.getMaxSuffixLength()));
-        this.getCommandRegistry().registerCommand(new NicknameCommand(this.chatManager, cfg.getMaxNicknameLength()));
-        this.getCommandRegistry().registerCommand(new PronounsCommand(this.chatManager, cfg.getMaxPronounsLength()));
-        this.getCommandRegistry().registerCommand(new NameColorCommand(this.chatManager));
-        this.getCommandRegistry().registerCommand(new MsgColorCommand(this.chatManager));
-        this.getCommandRegistry().registerCommand(new PrefixColorCommand(this.chatManager));
-        this.getCommandRegistry().registerCommand(new SuffixColorCommand(this.chatManager));
-        this.getCommandRegistry().registerCommand(new PronounsColorCommand(this.chatManager));
+        Supplier<ChatCustomizationConfig> configSupplier = this.config::get;
+
+        this.getCommandRegistry().registerCommand(new PrefixCommand(this.chatManager, configSupplier, cfg.getMaxPrefixLength()));
+        this.getCommandRegistry().registerCommand(new SuffixCommand(this.chatManager, configSupplier, cfg.getMaxSuffixLength()));
+        this.getCommandRegistry().registerCommand(new NicknameCommand(this.chatManager, configSupplier, cfg.getMaxNicknameLength()));
+        this.getCommandRegistry().registerCommand(new PronounsCommand(this.chatManager, configSupplier, cfg.getMaxPronounsLength()));
+        this.getCommandRegistry().registerCommand(new NameColorCommand(this.chatManager, configSupplier));
+        this.getCommandRegistry().registerCommand(new MsgColorCommand(this.chatManager, configSupplier));
+        this.getCommandRegistry().registerCommand(new PrefixColorCommand(this.chatManager, configSupplier));
+        this.getCommandRegistry().registerCommand(new SuffixColorCommand(this.chatManager, configSupplier));
+        this.getCommandRegistry().registerCommand(new PronounsColorCommand(this.chatManager, configSupplier));
         this.getCommandRegistry().registerCommand(new ResetFormatCommand(this.chatManager));
         this.getCommandRegistry().registerCommand(new ChatProfileCommand(this.chatManager));
 
-        this.getCommandRegistry().registerCommand(new StyleCommand(this.chatManager));
-        this.getCommandRegistry().registerCommand(new GradientCommand(this.chatManager));
-        this.getCommandRegistry().registerCommand(new RainbowCommand(this.chatManager));
+        this.getCommandRegistry().registerCommand(new StyleCommand(this.chatManager, configSupplier));
+        this.getCommandRegistry().registerCommand(new GradientCommand(this.chatManager, configSupplier));
+        this.getCommandRegistry().registerCommand(new RainbowCommand(this.chatManager, configSupplier));
         this.getCommandRegistry().registerCommand(new ColorsCommand());
         this.getCommandRegistry().registerCommand(new AdminChatCommand(this.chatManager, cfg));
-        this.getCommandRegistry().registerCommand(new ChatEditorCommand(this.chatManager));
+        this.getCommandRegistry().registerCommand(new ChatEditorCommand(this.chatManager, configSupplier));
         this.getCommandRegistry().registerCommand(new HyssentialCommand(this.chatManager));
 
+        this.getCommandRegistry().registerCommand(new ChatCustomCommand(this.presetManager, this.config));
+        this.getCommandRegistry().registerCommand(new PresetCommand(this.presetManager, this.chatManager));
+
         this.getLogger().at(Level.INFO).log("ChatCustomization loaded!");
+    }
+
+    private void reloadConfig() {
+        this.config.load();
+        this.presetManager.reload();
+        this.getLogger().at(Level.INFO).log("ChatCustomization configuration reloaded!");
     }
 
     @Override
@@ -95,8 +113,12 @@ public class ChatCustomizationPlugin extends JavaPlugin {
 
     private void onPlayerChat(@Nonnull PlayerChatEvent event) {
         PlayerRef sender = event.getSender();
-        PlayerChatProfile profile = chatManager.getProfile(sender.getUuid());
         ChatCustomizationConfig cfg = this.config.get();
+
+        // Check and apply presets based on permissions (cached for 1 minute)
+        presetApplicationManager.checkAndApplyPresets(sender);
+
+        PlayerChatProfile profile = chatManager.getProfile(sender.getUuid());
 
         if (cfg.getEnableMentions()) {
             processMentions(event.getContent(), cfg);

@@ -10,18 +10,23 @@ import com.hypixel.hytale.server.core.command.system.basecommands.AbstractPlayer
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
+import com.leclowndu93150.chatcustomization.config.ChatCustomizationConfig;
 import com.leclowndu93150.chatcustomization.manager.ChatManager;
 import com.leclowndu93150.chatcustomization.util.ArgumentParser;
+import com.leclowndu93150.chatcustomization.util.Permissions;
 import javax.annotation.Nonnull;
+import java.util.function.Supplier;
 
 public class PronounsCommand extends AbstractPlayerCommand {
     private final ChatManager chatManager;
+    private final Supplier<ChatCustomizationConfig> configSupplier;
     private final int maxLength;
     private final RequiredArg<String> pronounsArg = this.withRequiredArg("pronouns", "Your pronouns (e.g. he/him, she/her, they/them)", ArgTypes.STRING);
 
-    public PronounsCommand(@Nonnull ChatManager chatManager, int maxLength) {
+    public PronounsCommand(@Nonnull ChatManager chatManager, @Nonnull Supplier<ChatCustomizationConfig> configSupplier, int maxLength) {
         super("pronouns", "Set your pronouns to display in chat");
         this.chatManager = chatManager;
+        this.configSupplier = configSupplier;
         this.maxLength = maxLength;
     }
 
@@ -33,6 +38,12 @@ public class PronounsCommand extends AbstractPlayerCommand {
     @Override
     protected void execute(@Nonnull CommandContext context, @Nonnull Store<EntityStore> store,
                           @Nonnull Ref<EntityStore> ref, @Nonnull PlayerRef playerRef, @Nonnull World world) {
+        ChatCustomizationConfig config = configSupplier.get();
+        if (config.getRequirePermissionForPronouns() && !Permissions.hasPermission(playerRef, config.getPermissionPronouns())) {
+            context.sendMessage(Message.raw("You don't have permission to use this command.").color("#FF5555"));
+            return;
+        }
+
         String pronouns = ArgumentParser.stripQuotes(pronounsArg.get(context));
 
         if (pronouns.length() > maxLength) {
