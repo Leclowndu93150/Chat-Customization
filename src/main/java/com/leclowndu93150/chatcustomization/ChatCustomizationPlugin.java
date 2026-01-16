@@ -13,6 +13,7 @@ import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.Universe;
 import com.hypixel.hytale.server.core.universe.world.SoundUtil;
 import com.hypixel.hytale.server.core.util.Config;
+import com.leclowndu93150.chatcustomization.api.ChatFormatterAPI;
 import com.leclowndu93150.chatcustomization.commands.*;
 import com.leclowndu93150.chatcustomization.config.ChatCustomizationConfig;
 import com.leclowndu93150.chatcustomization.data.ElementStyle;
@@ -101,7 +102,10 @@ public class ChatCustomizationPlugin extends JavaPlugin {
             processMentions(event.getContent(), cfg);
         }
 
-        event.setFormatter((playerRef, message) -> buildFormattedMessage(playerRef, message, profile, cfg));
+        event.setFormatter((playerRef, message) -> {
+            Message baseFormatted = buildFormattedMessage(playerRef, message, profile, cfg);
+            return ChatFormatterAPI.processMessage(playerRef, message, baseFormatted);
+        });
     }
 
     private Message buildFormattedMessage(PlayerRef playerRef, String message, PlayerChatProfile profile, ChatCustomizationConfig cfg) {
